@@ -16,7 +16,7 @@ def fetch_data_from_mysql():
             host=db_hostname,
             user='dbuser',
             password='dbpassword',
-            database='database'
+            database='my_database'
         )
         
         # Create cursor
