@@ -75,4 +75,6 @@ resource "aws_ecs_service" "commit-backend" {
   lifecycle {
     ignore_changes = [desired_count]
   }
+
+  depends_on = [aws_db_instance.mysql]
 }

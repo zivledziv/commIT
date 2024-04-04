@@ -40,3 +40,23 @@ resource "aws_security_group" "rds_sg" {
 output "rds_hostname" {
   value = aws_db_instance.mysql.endpoint
 }
+
+
+/*
+how to create data inside new rds:
+0. install mysql on new ec2
+1. mysql -h mydb.crgmui4a48ii.us-east-1.rds.amazonaws.com -u dbuser -p
+2. CREATE DATABASE my_database;
+3. USE my_database;
+4. CREATE TABLE users (
+    ->     id INT AUTO_INCREMENT PRIMARY KEY,
+    ->     username VARCHAR(50) NOT NULL,
+    ->     email VARCHAR(100) NOT NULL
+    -> );
+5. SHOW TABLES;
+6. INSERT INTO users (username, email) VALUES ('john_doe', 'john@example.com');
+7. SELECT * FROM users;
+
+
+consider doing rds and bastion as pre requisites
+*/

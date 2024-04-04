@@ -37,10 +37,17 @@ resource "aws_security_group" "ecs_node_sg" {
   name_prefix = "commIT-ecs-node-sg-"
   vpc_id      = aws_vpc.my_vpc.id
 
+  ingress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"          # Allow all protocols
+    cidr_blocks = ["0.0.0.0/0"] # Allow traffic from all sources
+  }
+
   egress {
     from_port   = 0
-    to_port     = 65535
-    protocol    = "tcp"
+    to_port     = 0
+    protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
@@ -55,6 +62,7 @@ resource "aws_launch_template" "ecs_ec2" {
   image_id               = data.aws_ssm_parameter.ecs_node_ami.value
   instance_type          = "t2.micro"
   vpc_security_group_ids = [aws_security_group.ecs_node_sg.id]
+  key_name               = "key"
 
   iam_instance_profile { arn = aws_iam_instance_profile.ecs_node.arn }
   monitoring { enabled = true }
