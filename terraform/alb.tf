@@ -5,6 +5,7 @@ resource "aws_security_group" "http" {
   vpc_id      = aws_vpc.my_vpc.id
 
   dynamic "ingress" {
+    # it can also be only https
     for_each = [80, 443]
     content {
       protocol    = "tcp"

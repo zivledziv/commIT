@@ -10,8 +10,11 @@ data "aws_iam_policy_document" "ecs_node_doc" {
     effect  = "Allow"
 
     principals {
-      type        = "Service"
-      identifiers = ["ec2.amazonaws.com"]
+      type = "Service"
+      identifiers = [
+        "ec2.amazonaws.com",
+        "ecs.amazonaws.com"
+      ]
     }
   }
 }
@@ -32,7 +35,7 @@ resource "aws_iam_instance_profile" "ecs_node" {
   role        = aws_iam_role.ecs_node_role.name
 }
 
-# --- ECS Node SG --- change me !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+# --- ECS Node SG --- 
 resource "aws_security_group" "ecs_node_sg" {
   name_prefix = "commIT-ecs-node-sg-"
   vpc_id      = aws_vpc.my_vpc.id
@@ -42,6 +45,7 @@ resource "aws_security_group" "ecs_node_sg" {
     to_port     = 0
     protocol    = "-1"          # Allow all protocols
     cidr_blocks = ["0.0.0.0/0"] # Allow traffic from all sources
+    # security_groups = [aws_security_group.http.id, aws_security_group.bastion_sg.id]
   }
 
   egress {
@@ -78,8 +82,8 @@ resource "aws_launch_template" "ecs_ec2" {
 resource "aws_autoscaling_group" "ecs" {
   name_prefix               = "commIT-ecs-asg-"
   vpc_zone_identifier       = [aws_subnet.private_subnet_1.id, aws_subnet.private_subnet_2.id]
-  min_size                  = 2
-  max_size                  = 5
+  min_size                  = 1 # change to 2 for real
+  max_size                  = 2 # change to 5 for real
   health_check_grace_period = 0
   health_check_type         = "EC2"
   protect_from_scale_in     = false
@@ -164,3 +168,4 @@ resource "aws_cloudwatch_log_group" "ecs" {
   name              = "/ecs/demo"
   retention_in_days = 14
 }
+

@@ -22,7 +22,7 @@ resource "aws_ecs_task_definition" "commit-backend" {
       options = {
         "awslogs-region"        = "us-east-1",
         "awslogs-group"         = aws_cloudwatch_log_group.ecs.name,
-        "awslogs-stream-prefix" = "app"
+        "awslogs-stream-prefix" = "backend-app"
       }
     },
   }])
