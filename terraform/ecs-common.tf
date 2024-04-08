@@ -82,8 +82,8 @@ resource "aws_launch_template" "ecs_ec2" {
 resource "aws_autoscaling_group" "ecs" {
   name_prefix               = "commIT-ecs-asg-"
   vpc_zone_identifier       = [aws_subnet.private_subnet_1.id, aws_subnet.private_subnet_2.id]
-  min_size                  = 1 # change to 2 for real
-  max_size                  = 2 # change to 5 for real
+  min_size                  = 2
+  max_size                  = 8 
   health_check_grace_period = 0
   health_check_type         = "EC2"
   protect_from_scale_in     = false
